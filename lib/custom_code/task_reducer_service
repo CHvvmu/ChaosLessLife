@@ -1,0 +1,202 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+class TaskReducerService {
+  static const _tasksCol = 'Tasks';
+  static const _eventsCol = 'events';
+
+  // ── completeTask ───────────────────────────────────────────────────────
+  // Atomic batch: items.status=completed + Tasks.status=completed.
+  // Throws on batch failure → caller handles; logEvent skipped on throw.
+  static Future<void> completeTask({
+    required String itemPath,
+    String? taskId,
+    String? title,
+    String? sessionId,
+  }) async {
+    final db = FirebaseFirestore.instance;
+    final batch = db.batch();
+
+    batch.update(db.doc(itemPath), {'status': 'completed'});
+
+    if (taskId != null && taskId.isNotEmpty) {
+      batch.update(db.collection(_tasksCol).doc(taskId), {
+        'status': 'completed',
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    }
+
+    await batch.commit();
+
+    _logEvent(
+      type: 'task_completed',
+      sessionId: sessionId,
+      payload: {
+        if (taskId != null && taskId.isNotEmpty) 'taskId': taskId,
+        if (title != null && title.isNotEmpty) 'title': title,
+        'status': 'completed',
+      },
+    );
+  }
+
+  // ── snoozeTask ─────────────────────────────────────────────────────────
+  // Reads: tomorrow's Schedule + items count (pre-batch).
+  // Batch: items.status=snoozed + Schedule create/update + new item.
+  // Throws on batch failure → caller handles; logEvent skipped on throw.
+  static Future<void> snoozeTask({
+    required String itemPath,
+    required Map<String, dynamic> itemData,
+    required String userId,
+    String? sessionId,
+  }) async {
+    final db = FirebaseFirestore.instance;
+    final now = DateTime.now();
+    final tomorrow = DateTime(now.year, now.month, now.day + 1);
+    final tomorrowTs = Timestamp.fromDate(tomorrow.toUtc());
+
+    final schedSnap = await db
+        .collection('Schedules')
+        .where('userId', isEqualTo: userId)
+        .where('date', isEqualTo: tomorrowTs)
+        .limit(1)
+        .get();
+
+    final isNewSchedule = schedSnap.docs.isEmpty;
+    final scheduleRef = isNewSchedule
+        ? db.collection('Schedules').doc()
+        : schedSnap.docs.first.reference;
+
+    final existingCount =
+        (await scheduleRef.collection('items').get()).docs.length;
+
+    Timestamp? _shift(Timestamp? orig) {
+      if (orig == null) return null;
+      final local = orig.toDate().toLocal();
+      return Timestamp.fromDate(
+        DateTime(tomorrow.year, tomorrow.month, tomorrow.day, local.hour,
+                local.minute)
+            .toUtc(),
+      );
+    }
+
+    final batch = db.batch();
+
+    batch.update(db.doc(itemPath), {'status': 'snoozed'});
+
+    if (isNewSchedule) {
+      batch.set(scheduleRef, {
+        'userId': userId,
+        'date': tomorrowTs,
+        'status': 'active',
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    } else {
+      batch.update(scheduleRef, {'updatedAt': FieldValue.serverTimestamp()});
+    }
+
+    batch.set(scheduleRef.collection('items').doc(), {
+      'taskId': itemData['taskId'],
+      'title': itemData['title'],
+      'description': itemData['description'],
+      'start': _shift(itemData['start'] as Timestamp?),
+      'end': _shift(itemData['end'] as Timestamp?),
+      'durationMin': itemData['durationMin'],
+      'order': existingCount,
+      'status': 'active',
+      'locked': false,
+      'source': 'snoozed',
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+
+    await batch.commit();
+
+    _logEvent(
+      type: 'task_snoozed',
+      sessionId: sessionId,
+      payload: {
+        if (itemData['taskId'] is String)
+          'taskId': itemData['taskId'] as String,
+        if (itemData['title'] is String) 'title': itemData['title'] as String,
+        'status': 'snoozed',
+      },
+    );
+  }
+
+  // ── updateTask ─────────────────────────────────────────────────────────
+  // Batch: Tasks update + denorm sync of title/description/status to items.
+  // Denorm query uses collectionGroup('items').where('taskId') — requires
+  // a Firestore composite index: Collection group = items, field = taskId.
+  // If the index query fails, the Task is still updated (items stay stale).
+  // Throws on batch.commit() failure → caller handles; logEvent skipped.
+  static Future<void> updateTask({
+    required String taskId,
+    required Map<String, dynamic> updates,
+    String? sessionId,
+  }) async {
+    final db = FirebaseFirestore.instance;
+
+    const denormFields = ['title', 'description', 'status'];
+    final denormUpdate = Map<String, dynamic>.fromEntries(
+      denormFields
+          .where((f) => updates.containsKey(f))
+          .map((f) => MapEntry(f, updates[f])),
+    );
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> itemDocs = [];
+    if (denormUpdate.isNotEmpty) {
+      try {
+        final snap = await db
+            .collectionGroup('items')
+            .where('taskId', isEqualTo: taskId)
+            .get();
+        itemDocs = snap.docs;
+      } catch (_) {
+        // Index missing or permission issue — proceed without denorm sync.
+      }
+    }
+
+    final batch = db.batch();
+
+    batch.update(db.collection(_tasksCol).doc(taskId), {
+      ...updates,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+
+    for (final doc in itemDocs) {
+      batch.update(doc.reference, denormUpdate);
+    }
+
+    await batch.commit();
+
+    _logEvent(
+      type: 'task_updated',
+      sessionId: sessionId,
+      payload: {
+        'taskId': taskId,
+        if (updates['title'] is String) 'title': updates['title'] as String,
+        if (updates['status'] is String) 'status': updates['status'] as String,
+      },
+    );
+  }
+
+  // ── private: fire-and-forget telemetry ───────────────────────────────
+  // Called only after successful batch.commit(). Errors silently swallowed.
+  static void _logEvent({
+    required String type,
+    String? sessionId,
+    Map<String, dynamic>? payload,
+    String source = 'ui',
+  }) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    FirebaseFirestore.instance.collection(_eventsCol).add({
+      'userId': uid,
+      'sessionId': sessionId,
+      'type': type,
+      'payload': payload ?? {},
+      'source': source,
+      'timestamp': FieldValue.serverTimestamp(),
+    }).catchError((_) {});
+  }
+}

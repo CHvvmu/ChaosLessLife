@@ -1,0 +1,2 @@
+NSCalendarsUsageDescription = "Required for communicating with the AI agent";
+PermissionGroupNotification = "Required for communicating with the AI agent";

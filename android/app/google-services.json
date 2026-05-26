@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "523608394516",
+    "project_id": "recipesai-251c4",
+    "storage_bucket": "recipesai-251c4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523608394516:android:deaaf86759ca6e52589001",
+        "android_client_info": {
+          "package_name": "com.mycompany.chaoslessvoice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAS_mchqBR_F_n_A0cAhrcKfafRzTPTf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
