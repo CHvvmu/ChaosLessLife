@@ -847,7 +847,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget>
                                                     text: FFLocalizations.of(
                                                             context)
                                                         .getText(
-                                                      '3fijapqn' /* Anonim */,
+                                                      '3fijapqn' /* Попробовать без аккаунта */,
                                                     ),
                                                     options: FFButtonOptions(
                                                       width: 230.0,

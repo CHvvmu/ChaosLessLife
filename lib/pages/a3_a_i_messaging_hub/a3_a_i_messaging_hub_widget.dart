@@ -563,7 +563,7 @@ class _A3AIMessagingHubWidgetState extends State<A3AIMessagingHubWidget> {
                         size: 24.0,
                       ),
                       onPressed: () async {
-                        context.pushNamed(A5UserSettingsWidget.routeName);
+                        context.pushNamed(UserSettingsWidget.routeName);
                       },
                     ),
                   ],

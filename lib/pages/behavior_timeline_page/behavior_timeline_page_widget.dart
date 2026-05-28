@@ -1,9 +1,9 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/event_card_widget.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -82,29 +82,19 @@ class _BehaviorTimelinePageWidgetState
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    FFButtonWidget(
-                      onPressed: () async {
-                        context.pushNamed(HomePageWidget.routeName);
-                      },
-                      text: FFLocalizations.of(context).getText(
-                        '78bnruoz' /* На главную */,
-                      ),
-                      options: FFButtonOptions(
-                        height: 42.0,
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            12.0, 0.0, 12.0, 0.0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    FlutterFlowIconButton(
+                      borderColor: Colors.transparent,
+                      borderRadius: 8.0,
+                      borderWidth: 0.0,
+                      buttonSize: 40.0,
+                      icon: Icon(
+                        Icons.arrow_back_ios,
                         color: FlutterFlowTheme.of(context).primary,
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                          width: 0.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
+                        size: 22.0,
                       ),
+                      onPressed: () async {
+                        context.pushNamed(UserSettingsWidget.routeName);
+                      },
                     ),
                     Text(
                       FFLocalizations.of(context).getText(

@@ -3,10 +3,10 @@ import '/component/profile_card/profile_card_widget.dart';
 import '/component/settings_item/settings_item_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
-import 'a5_user_settings_widget.dart' show A5UserSettingsWidget;
+import 'user_settings_widget.dart' show UserSettingsWidget;
 import 'package:flutter/material.dart';
 
-class A5UserSettingsModel extends FlutterFlowModel<A5UserSettingsWidget> {
+class UserSettingsModel extends FlutterFlowModel<UserSettingsWidget> {
   ///  State fields for stateful widgets in this page.
 
   // Model for ProfileCard component.

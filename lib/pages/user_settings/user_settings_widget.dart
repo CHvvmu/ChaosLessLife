@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/component/group_header/group_header_widget.dart';
 import '/component/profile_card/profile_card_widget.dart';
 import '/component/settings_item/settings_item_widget.dart';
@@ -10,28 +11,28 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'a5_user_settings_model.dart';
-export 'a5_user_settings_model.dart';
+import 'user_settings_model.dart';
+export 'user_settings_model.dart';
 
-class A5UserSettingsWidget extends StatefulWidget {
-  const A5UserSettingsWidget({super.key});
+class UserSettingsWidget extends StatefulWidget {
+  const UserSettingsWidget({super.key});
 
-  static String routeName = 'A5_UserSettings';
-  static String routePath = '/a5UserSettings';
+  static String routeName = 'UserSettings';
+  static String routePath = '/userSettings';
 
   @override
-  State<A5UserSettingsWidget> createState() => _A5UserSettingsWidgetState();
+  State<UserSettingsWidget> createState() => _UserSettingsWidgetState();
 }
 
-class _A5UserSettingsWidgetState extends State<A5UserSettingsWidget> {
-  late A5UserSettingsModel _model;
+class _UserSettingsWidgetState extends State<UserSettingsWidget> {
+  late UserSettingsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => A5UserSettingsModel());
+    _model = createModel(context, () => UserSettingsModel());
 
     _model.darkModeSwitchValue = FFAppState().isDarkMode;
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -144,12 +145,14 @@ class _A5UserSettingsWidgetState extends State<A5UserSettingsWidget> {
                     ),
                   ),
                 ),
-                wrapWithModel(
-                  model: _model.profileCardModel,
-                  updateCallback: () => safeSetState(() {}),
-                  child: ProfileCardWidget(
-                    name: 'Александр Иванов',
-                    role: 'Project Manager',
+                AuthUserStreamWidget(
+                  builder: (context) => wrapWithModel(
+                    model: _model.profileCardModel,
+                    updateCallback: () => safeSetState(() {}),
+                    child: ProfileCardWidget(
+                      name: currentUserDisplayName,
+                      role: 'Project Manager',
+                    ),
                   ),
                 ),
                 wrapWithModel(
@@ -194,7 +197,7 @@ class _A5UserSettingsWidgetState extends State<A5UserSettingsWidget> {
                             children: [
                               Text(
                                 FFLocalizations.of(context).getText(
-                                  'v5z3knwq' /* Тёмный режим */,
+                                  'ybkmesj4' /* Тёмный режим */,
                                 ),
                                 style: FlutterFlowTheme.of(context)
                                     .bodyLarge
@@ -218,7 +221,7 @@ class _A5UserSettingsWidgetState extends State<A5UserSettingsWidget> {
                               ),
                               Text(
                                 FFLocalizations.of(context).getText(
-                                  'sapxwjot' /* Переключить тему приложения */,
+                                  'tq7aohyu' /* Переключить тему приложения */,
                                 ),
                                 style: FlutterFlowTheme.of(context)
                                     .bodySmall
@@ -445,9 +448,10 @@ class _A5UserSettingsWidgetState extends State<A5UserSettingsWidget> {
                   updateCallback: () => safeSetState(() {}),
                   child: SettingsItemWidget(
                     icon: 'lock_outline_rounded',
-                    title: 'Параметры конфиденциальности',
+                    title: 'Параметры защиты',
                     subtitle: 'Доступ к звонкам и контактам',
                     hasSubtitle: true,
+                    hasValue: false,
                   ),
                 ),
                 wrapWithModel(

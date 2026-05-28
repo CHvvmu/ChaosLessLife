@@ -131,9 +131,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => CallAssistantWidget(),
         ),
         FFRoute(
-          name: A5UserSettingsWidget.routeName,
-          path: A5UserSettingsWidget.routePath,
-          builder: (context, params) => A5UserSettingsWidget(),
+          name: UserSettingsWidget.routeName,
+          path: UserSettingsWidget.routePath,
+          builder: (context, params) => UserSettingsWidget(),
         ),
         FFRoute(
           name: TasksPageWidget.routeName,
@@ -193,6 +193,31 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: BehaviorTimelinePageWidget.routeName,
           path: BehaviorTimelinePageWidget.routePath,
           builder: (context, params) => BehaviorTimelinePageWidget(),
+        ),
+        FFRoute(
+          name: EditProfilePageWidget.routeName,
+          path: EditProfilePageWidget.routePath,
+          builder: (context, params) => EditProfilePageWidget(),
+        ),
+        FFRoute(
+          name: SignInPageWidget.routeName,
+          path: SignInPageWidget.routePath,
+          builder: (context, params) => SignInPageWidget(),
+        ),
+        FFRoute(
+          name: SignUpPageWidget.routeName,
+          path: SignUpPageWidget.routePath,
+          builder: (context, params) => SignUpPageWidget(),
+        ),
+        FFRoute(
+          name: ForgotPasswordPageWidget.routeName,
+          path: ForgotPasswordPageWidget.routePath,
+          builder: (context, params) => ForgotPasswordPageWidget(),
+        ),
+        FFRoute(
+          name: SocialAuthPageWidget.routeName,
+          path: SocialAuthPageWidget.routePath,
+          builder: (context, params) => SocialAuthPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

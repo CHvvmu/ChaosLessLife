@@ -140,6 +140,12 @@ class FFAppState extends ChangeNotifier {
   set activeSessionId(String value) {
     _activeSessionId = value;
   }
+
+  String _userAvatar = '';
+  String get userAvatar => _userAvatar;
+  set userAvatar(String value) {
+    _userAvatar = value;
+  }
 }
 
 void _safeInit(Function() initializeField) {

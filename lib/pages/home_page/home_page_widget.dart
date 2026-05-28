@@ -210,7 +210,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         size: 24.0,
                       ),
                       onPressed: () async {
-                        context.pushNamed(A5UserSettingsWidget.routeName);
+                        context.pushNamed(UserSettingsWidget.routeName);
                       },
                     ),
                   ],
@@ -294,19 +294,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ].divide(SizedBox(height: 4.0)),
-                            ),
-                            Container(
-                              width: 44.0,
-                              height: 44.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(22.0),
-                              ),
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Icon(
-                                Icons.mic,
-                                color: FlutterFlowTheme.of(context).primary,
-                                size: 22.0,
-                              ),
                             ),
                           ],
                         ),

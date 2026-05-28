@@ -1,6 +1,8 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'profile_card_model.dart';
@@ -186,8 +188,8 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget> {
                 Expanded(
                   flex: 1,
                   child: FFButtonWidget(
-                    onPressed: () {
-                      print('Button pressed ...');
+                    onPressed: () async {
+                      context.pushNamed(EditProfilePageWidget.routeName);
                     },
                     text: FFLocalizations.of(context).getText(
                       'ndvnu7l7' /* Редактировать */,
@@ -216,8 +218,13 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget> {
                 Expanded(
                   flex: 1,
                   child: FFButtonWidget(
-                    onPressed: () {
-                      print('Button pressed ...');
+                    onPressed: () async {
+                      GoRouter.of(context).prepareAuthEvent();
+                      await authManager.signOut();
+                      GoRouter.of(context).clearRedirectLocation();
+
+                      context.pushNamedAuth(
+                          AuthPageWidget.routeName, context.mounted);
                     },
                     text: FFLocalizations.of(context).getText(
                       'bf1ifxq7' /* Выйти */,

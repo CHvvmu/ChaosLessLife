@@ -321,6 +321,16 @@ class _TaskReviewPageWidgetState extends State<TaskReviewPageWidget> {
 
                         context.pushNamed(InboxPageWidget.routeName);
 
+                        context.pushNamed(InboxPageWidget.routeName);
+
+                        context.pushNamed(InboxPageWidget.routeName);
+
+                        context.pushNamed(InboxPageWidget.routeName);
+
+                        context.pushNamed(InboxPageWidget.routeName);
+
+                        context.pushNamed(InboxPageWidget.routeName);
+
                         safeSetState(() {});
                       },
                       text: FFLocalizations.of(context).getText(

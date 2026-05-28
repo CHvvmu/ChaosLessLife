@@ -753,7 +753,7 @@ class _TasksPageWidgetState extends State<TasksPageWidget> {
                         size: 24.0,
                       ),
                       onPressed: () async {
-                        context.pushNamed(A5UserSettingsWidget.routeName);
+                        context.pushNamed(UserSettingsWidget.routeName);
                       },
                     ),
                   ],

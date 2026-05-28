@@ -429,7 +429,7 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': '',
     },
   },
-  // A5_UserSettings
+  // UserSettings
   {
     'siwd7nkf': {
       'ru': 'Жизнь без хаоса',
@@ -439,11 +439,11 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'ru': 'НАСТРОЙКИ',
       'en': '',
     },
-    'v5z3knwq': {
+    'ybkmesj4': {
       'ru': 'Тёмный режим',
       'en': '',
     },
-    'sapxwjot': {
+    'tq7aohyu': {
       'ru': 'Переключить тему приложения',
       'en': '',
     },
@@ -732,7 +732,7 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': '',
     },
     '3fijapqn': {
-      'ru': 'Anonim',
+      'ru': 'Попробовать без аккаунта',
       'en': '',
     },
     '2y8mtdv2': {
@@ -1010,12 +1010,59 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
   },
   // BehaviorTimelinePage
   {
-    '78bnruoz': {
-      'ru': 'На главную',
-      'en': '',
-    },
     'ahko1ubg': {
       'ru': 'История действий',
+      'en': '',
+    },
+  },
+  // EditProfilePage
+  {
+    '5svoixl4': {
+      'ru': 'Редактировать профиль',
+      'en': '',
+    },
+    'p90ezlw8': {
+      'ru': 'Имя',
+      'en': '',
+    },
+    'tlo3iole': {
+      'ru': 'Телефон',
+      'en': '',
+    },
+    'gqg4qy6y': {
+      'ru': 'Сохранить',
+      'en': '',
+    },
+    '9ekedzt4': {
+      'ru': 'Отмена',
+      'en': '',
+    },
+  },
+  // SignInPage
+  {
+    'h5nlbxyu': {
+      'ru': 'Home',
+      'en': '',
+    },
+  },
+  // SignUpPage
+  {
+    '61bw7c2b': {
+      'ru': 'Home',
+      'en': '',
+    },
+  },
+  // ForgotPasswordPage
+  {
+    '3u42dlct': {
+      'ru': 'Home',
+      'en': '',
+    },
+  },
+  // SocialAuthPage
+  {
+    'voxfow79': {
+      'ru': 'Home',
       'en': '',
     },
   },

@@ -12,8 +12,7 @@ export '/pages/a3_a_i_messaging_hub/a3_a_i_messaging_hub_widget.dart'
     show A3AIMessagingHubWidget;
 export '/pages/call_assistant/call_assistant_widget.dart'
     show CallAssistantWidget;
-export '/pages/a5_user_settings/a5_user_settings_widget.dart'
-    show A5UserSettingsWidget;
+export '/pages/user_settings/user_settings_widget.dart' show UserSettingsWidget;
 export '/pages/tasks_page/tasks_page_widget.dart' show TasksPageWidget;
 export '/pages/home_page/home_page_widget.dart' show HomePageWidget;
 export '/pages/a3_call_analytics_reports/a3_call_analytics_reports_widget.dart'
@@ -29,3 +28,11 @@ export '/pages/inbox_page/inbox_page_widget.dart' show InboxPageWidget;
 export '/pages/today_page/today_page_widget.dart' show TodayPageWidget;
 export '/pages/behavior_timeline_page/behavior_timeline_page_widget.dart'
     show BehaviorTimelinePageWidget;
+export '/pages/edit_profile_page/edit_profile_page_widget.dart'
+    show EditProfilePageWidget;
+export '/sign_in_page/sign_in_page_widget.dart' show SignInPageWidget;
+export '/sign_up_page/sign_up_page_widget.dart' show SignUpPageWidget;
+export '/forgot_password_page/forgot_password_page_widget.dart'
+    show ForgotPasswordPageWidget;
+export '/social_auth_page/social_auth_page_widget.dart'
+    show SocialAuthPageWidget;
